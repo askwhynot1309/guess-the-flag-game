@@ -18,7 +18,7 @@ public class GameManager : MonoBehaviour
 
     private List<Country> countries;
     private Country correctCountry;
-    private float timeRemaining = 3f;
+    private float timeRemaining = 60f;
     private int score = 0;
     private bool isGameActive = true;
 
