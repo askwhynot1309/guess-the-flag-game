@@ -15,12 +15,14 @@ public class GameManager : MonoBehaviour
     public GameObject timeUpPanel;
     public TextMeshProUGUI finalScoreText;
     public Button restartButton;
+    public TextMeshProUGUI highscoreText;
 
     private List<Country> countries;
     private Country correctCountry;
-    private float timeRemaining = 60f;
+    private float timeRemaining = 6f;
     private int score = 0;
     private bool isGameActive = true;
+
 
     void Start()
     {
@@ -28,6 +30,16 @@ public class GameManager : MonoBehaviour
         timeUpPanel.SetActive(false);
         restartButton.onClick.AddListener(RestartGame);
         ShowNewFlag();
+        StartCoroutine(GameAPI.Instance.GetHighScore(
+        score =>
+        {
+            Debug.Log("Fetched high score: " + score);
+            highscoreText.text = "Highscore: " + score.ToString();
+        },
+        error =>
+        {
+            Debug.LogError("Failed to fetch high score: " + error);
+        }));
     }
 
     void Update()
@@ -108,6 +120,13 @@ public class GameManager : MonoBehaviour
         isGameActive = false;
         timeUpPanel.SetActive(true);
         finalScoreText.text = "Final Score: " + score;
+        StartCoroutine(GameAPI.Instance.PostPlayHistory(score,
+                    onSuccess: () => {
+                        Debug.Log("Score posted successfully.");
+                    },
+                    onError: (error) => {
+                        Debug.LogError($"Failed to post score: {error}");
+                    }));
     }
 
     void RestartGame()
