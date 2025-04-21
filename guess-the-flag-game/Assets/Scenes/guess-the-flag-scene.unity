@@ -643,6 +643,7 @@ MonoBehaviour:
   timeUpPanel: {fileID: 139444537}
   finalScoreText: {fileID: 1447326049}
   restartButton: {fileID: 1702058519}
+  highscoreText: {fileID: 66770131}
 --- !u!1 &619394800
 GameObject:
   m_ObjectHideFlags: 0
