@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        SoundManager.Instance.PlayMusic();
         countries = CountryLoader.LoadCountries();
         timeUpPanel.SetActive(false);
         restartButton.onClick.AddListener(RestartGame);
@@ -97,10 +98,12 @@ public class GameManager : MonoBehaviour
         {
             score += 100;
             button.image.color = Color.green;
+            SoundManager.Instance.PlayCorrect();
         }
         else
         {
             button.image.color = Color.red;
+            SoundManager.Instance.PlayWrong();
         }
 
         scoreText.text = "Score: " + score;
