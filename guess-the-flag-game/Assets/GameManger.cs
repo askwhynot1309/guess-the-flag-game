@@ -21,7 +21,7 @@ public class GameManager : MonoBehaviour
 
     private List<Country> countries;
     private Country correctCountry;
-    private float timeRemaining = 6f;
+    private float timeRemaining = 60f;
     private int score = 0;
     private bool isGameActive = true;
 
@@ -65,12 +65,14 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameActive) return;
 
-        if (detector1 != null && detector1.IsFootOver && answerButton1.interactable)
+        if (detector1 != null && detector1.IsFootOver && !detector1.hasClicked && answerButton1.interactable)
         {
+            detector1.hasClicked = true;
             answerButton1.onClick.Invoke();
         }
-        else if (detector2 != null && detector2.IsFootOver && answerButton2.interactable)
+        else if (detector2 != null && detector2.IsFootOver && !detector2.hasClicked && answerButton2.interactable)
         {
+            detector2.hasClicked = true;
             answerButton2.onClick.Invoke();
         }
     }
@@ -156,10 +158,12 @@ public class GameManager : MonoBehaviour
         timeUpPanel.SetActive(true);
         finalScoreText.text = "Final Score: " + score;
         StartCoroutine(GameAPI.Instance.PostPlayHistory(score,
-                    onSuccess: () => {
+                    onSuccess: () =>
+                    {
                         Debug.Log("Score posted successfully.");
                     },
-                    onError: (error) => {
+                    onError: (error) =>
+                    {
                         Debug.LogError($"Failed to post score: {error}");
                     }));
     }
