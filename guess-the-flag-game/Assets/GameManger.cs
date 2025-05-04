@@ -6,6 +6,8 @@ using TMPro;
 
 public class GameManager : MonoBehaviour
 {
+    public AstraInputController inputController;
+
     [Header("UI")]
     public RawImage flagImage;
     public Button answerButton1;
@@ -22,6 +24,9 @@ public class GameManager : MonoBehaviour
     private float timeRemaining = 6f;
     private int score = 0;
     private bool isGameActive = true;
+
+    private FootDetector detector1;
+    private FootDetector detector2;
 
 
     void Start()
@@ -41,6 +46,33 @@ public class GameManager : MonoBehaviour
         {
             Debug.LogError("Failed to fetch high score: " + error);
         }));
+
+        if (inputController == null)
+        {
+            inputController = FindFirstObjectByType<AstraInputController>();
+        }
+
+        if (inputController != null)
+        {
+            inputController.OnClickEvent.AddListener(HandleFootClick);
+        }
+
+        detector1 = answerButton1.GetComponent<FootDetector>();
+        detector2 = answerButton2.GetComponent<FootDetector>();
+    }
+
+    void HandleFootClick()
+    {
+        if (!isGameActive) return;
+
+        if (detector1 != null && detector1.IsFootOver && answerButton1.interactable)
+        {
+            answerButton1.onClick.Invoke();
+        }
+        else if (detector2 != null && detector2.IsFootOver && answerButton2.interactable)
+        {
+            answerButton2.onClick.Invoke();
+        }
     }
 
     void Update()
