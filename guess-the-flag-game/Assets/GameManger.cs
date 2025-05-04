@@ -7,6 +7,7 @@ using TMPro;
 public class GameManager : MonoBehaviour
 {
     public AstraInputController inputController;
+    public FootFollower footFollower;
 
     [Header("UI")]
     public RawImage flagImage;
@@ -27,7 +28,7 @@ public class GameManager : MonoBehaviour
 
     private FootDetector detector1;
     private FootDetector detector2;
-
+    private FootDetector restartDetector;
 
     void Start()
     {
@@ -59,11 +60,20 @@ public class GameManager : MonoBehaviour
 
         detector1 = answerButton1.GetComponent<FootDetector>();
         detector2 = answerButton2.GetComponent<FootDetector>();
+        restartDetector = restartButton.GetComponent<FootDetector>();
     }
 
     void HandleFootClick()
     {
-        if (!isGameActive) return;
+        if (!isGameActive)
+        {
+            if (restartDetector != null && restartDetector.IsFootOver && !restartDetector.hasClicked && restartButton.interactable)
+            {
+                restartDetector.hasClicked = true;
+                restartButton.onClick.Invoke();
+            }
+            return;
+        }
 
         if (detector1 != null && detector1.IsFootOver && !detector1.hasClicked && answerButton1.interactable)
         {
@@ -173,7 +183,6 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 
-    //counter spam
     void SetButtonsInteractable(bool interactable)
     {
         answerButton1.interactable = interactable;
