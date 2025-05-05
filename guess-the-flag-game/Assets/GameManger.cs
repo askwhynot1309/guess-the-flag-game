@@ -180,7 +180,25 @@ public class GameManager : MonoBehaviour
 
     void RestartGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        isGameActive= true;
+        timeRemaining = 60f;
+        score = 0;
+        scoreText.text = "Score: " + score;
+        SoundManager.Instance.PlayMusic();
+        countries = CountryLoader.LoadCountries();
+        timeUpPanel.SetActive(false);
+        restartButton.onClick.AddListener(RestartGame);
+        ShowNewFlag();
+        StartCoroutine(GameAPI.Instance.GetHighScore(
+        score =>
+        {
+            Debug.Log("Fetched high score: " + score);
+            highscoreText.text = "Highscore: " + score.ToString();
+        },
+        error =>
+        {
+            Debug.LogError("Failed to fetch high score: " + error);
+        }));
     }
 
     void SetButtonsInteractable(bool interactable)
