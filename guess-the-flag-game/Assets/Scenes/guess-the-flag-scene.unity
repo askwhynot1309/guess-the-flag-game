@@ -131,7 +131,7 @@ GameObject:
   - component: {fileID: 58935116}
   - component: {fileID: 58935115}
   m_Layer: 5
-  m_Name: ErrorMessage
+  m_Name: Message
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -696,6 +696,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3f2d4046b02d4d540a01f78e1c50b3fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  message: {fileID: 58935115}
   OnClickEvent:
     m_PersistentCalls:
       m_Calls: []
@@ -2748,6 +2749,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   AutoRequestAndroidUsbPermission: 1
+  message: {fileID: 58935115}
   TimeText: {fileID: 0}
   ToggleDebugText: {fileID: 0}
   NewBodyFrameEvent:
